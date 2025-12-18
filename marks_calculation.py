@@ -2,11 +2,9 @@ import numpy as np
 
 Students=np.array(["Areeb","Affan","Hassan","Ahmed"])
 Subject=np.array(["English","Urdu","JS","C+"])
-marks=np.array([[22,57,70,80],
-                [90,70,65,46],
-                [78,70,40,50],
-                [70,75,65,45]])
-
+rng=np.random.default_rng()
+marks=rng.integers(30,100,(4,4))
+print(marks)
 avg=np.average(marks,axis=0)
 for i in range(0,4):
     print(f"the avgerage marks of {Subject[i]} is {avg[i]}")
