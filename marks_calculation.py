@@ -1,24 +1,48 @@
 import numpy as np
+import pandas as pd
 
 Students=np.array(["Areeb","Affan","Hassan","Ahmed"])
 Subject=np.array(["English","Urdu","JS","C+"])
-rng=np.random.default_rng()
+rng=np.random.default_rng(42)
 marks=rng.integers(30,100,(4,4))
-print(marks)
-avg=np.average(marks,axis=0)
-for i in range(0,4):
-    print(f"the avgerage marks of {Subject[i]} is {avg[i]}")
-print()
-print()
-sum=np.sum(marks,axis=1)
-for i in range(0,4):
-    print(f"the sum  of {Students[i]}  is {sum[i]}")
-avg_marks=np.average(marks,axis=1)
-grades = np.where(avg >= 80, "A",
-         np.where(avg >= 65, "B",
-         np.where(avg >= 50, "C", "D")))
-status = np.where((grades == "A") | (grades == "B"), "Pass", "Fail")
-print()
+#print(marks)
+df=pd.DataFrame(marks, index=Students, columns=Subject)
+#print(df)
+# avg of subjects
 
-for j in range(0,4):
-    print(f"{Students[j]} has {grades[j]} and thier status is {status[j]}")
+#print(df)
+#print("The average of each subject")
+#print(df.mean())
+avg_sub=df.mean()
+#print("The total of each student")
+#print(df.sum(axis=1))
+#print("The average of each student")
+#print(df.mean(axis=1))
+  
+
+#new columns
+df["Average"]=df.mean(axis=1)
+#print(df["Average"])
+
+df["Grade"] = np.where(df["Average"] >= 80, "A",
+                np.where(df["Average"] >= 65, "B",
+                np.where(df["Average"] >= 50, "C", "D")))
+#print(df["Grade"])
+
+df["Status"] =np.where((df["Grade"] == "A") | (df["Grade"] == "B"),"Pass","Fail")
+#print(df["Status"])
+
+#questions
+print("Top performing student")
+top_performer=df["Average"].sort_values(ascending=False)
+print(top_performer.head(1))
+print("weakest performing student")
+weak_performer=df["Average"].sort_values()
+print(weak_performer.head(1))
+print("easiest subject : ")
+print(avg_sub.sort_values(ascending=False).head(1))
+
+print("hardest subject : ")
+print(avg_sub.sort_values().head(1))
+
+print(df)
